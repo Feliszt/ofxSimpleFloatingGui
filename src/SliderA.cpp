@@ -6,14 +6,13 @@ SliderA::SliderA()
 }
 
 /// setup
-void SliderA::setup(float _minValue, float _maxValue, float _value, ofTrueTypeFont _font, ofColor _textColor, ofColor _hoverColor, ofColor _dragColor)
+void SliderA::setup(float _minValue, float _maxValue, float _value, ofTrueTypeFont _font, ofColor _textColor, ofColor _dragColor)
 {
     minValue = _minValue;
     maxValue = _maxValue;
     value = _value;
     textFont = _font;
     textColor = _textColor;
-    hoverColor = _hoverColor;
     dragColor = _dragColor;
     dragColorBoundary = _dragColor;
     dragColorBoundary.setBrightness(100);
@@ -82,7 +81,7 @@ float SliderA::draw(float posX, float posY, ofMatrix4x4 transMatrix){
 
         if((hovered && !dragged) || (dragged && diff == 0))
         {
-            ofSetColor(hoverColor);
+            ofSetColor(dragColor);
             ofDrawTriangle(20, - 5, 20, 5, 25, 0);
             ofDrawTriangle(- 20, -5, - 20, 5, - 25, 0);
         }

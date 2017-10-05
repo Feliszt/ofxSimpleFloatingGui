@@ -22,10 +22,14 @@ private:
     void keyPressed(ofKeyEventArgs& eventArgs);
 
     // variables
+        // value
     string          displayedString;
     string          editString;
+        // design
     ofTrueTypeFont  stringFont;
     ofColor         stringColor;
+    ofColor         backgroundColor;
+    ofRectangle     backgroundRect;
     int             bbPad;
     bool            hovered;
     bool            editMode;

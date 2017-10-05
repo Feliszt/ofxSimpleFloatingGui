@@ -10,7 +10,7 @@
 class SliderA
 {
 public:
-    void setup(float _minValue, float _maxValue, float _value, ofTrueTypeFont _font, ofColor _textColor, ofColor _hoverColor, ofColor _dragColor);
+    void setup(float _minValue, float _maxValue, float _value, ofTrueTypeFont _font, ofColor _textColor, ofColor _dragColor);
     float draw(float posX, float posY, ofMatrix4x4 transMatrix);
     float getValue();
     float getMinValue();

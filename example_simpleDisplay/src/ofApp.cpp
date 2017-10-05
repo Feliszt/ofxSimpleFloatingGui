@@ -3,13 +3,13 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     // load fonts
-    font1.load("overpass-mono/overpass-mono-regular", 10);
+    font1.load("overpass-mono/overpass-mono-regular", 11);
     font2.load("overpass-mono/overpass-mono-regular", 11);
 
     // setting up GUI variables
-    sliderTypeA.setup(300, 800, 450, font1, ofColor:: black, ofColor::black, ofColor::darkGray);
+    sliderTypeA.setup(300, 800, 450, font1,ofColor::black, ofColor::blue);
     sliderTypeB.setup(0.5, 100, ofColor::gray, ofColor::black);
-    textField.setup("test string", font1, ofColor::black);
+    textField.setup("abcdefghijklmnopqrstuvwxyz 0123456789", font1, ofColor::black);
     toggleButton.setup(true, ofColor::darkBlue);
 }
 

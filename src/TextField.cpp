@@ -13,6 +13,8 @@ void TextField::setup(string _displayedString, ofTrueTypeFont _stringFont, ofCol
     stringFont = _stringFont;
     stringColor = _stringColor;
 
+    backgroundColor.set(230);
+
     bbPad = 3;
     blinkThresh = (int) (ofGetFrameRate() * 0.6);   // we want the blink to be 0.6 seconds long
 }
@@ -23,6 +25,7 @@ string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix)
     //ofFill();
     //ofDrawCircle(posX, posY, 2);
 
+    /*
     // get bounding box of displayed string
     ofRectangle boundingBoxString;
     if(editMode){
@@ -66,9 +69,44 @@ string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix)
         // we save change into displayedString
         displayedString = editString;
     }
+    */
+
+    int padX = 15;
+    int padY = 8;
+    float strW = stringFont.stringWidth(displayedString);
+    float rectW = strW + 2 * padX;
+    float strH = stringFont.stringHeight(displayedString);
+    float rectH = strH + 2 * padY;
+    backgroundRect = ofRectangle(0, 0, rectW, rectH);
 
     ofPushStyle();
+    ofSetLineWidth(1);
 
+        ofPushMatrix();
+        ofTranslate(posX, posY);
+
+            ofSetColor(backgroundColor);
+            ofDrawRectRounded(backgroundRect, backgroundRect.height / 10);
+            ofNoFill();
+            ofSetColor(ofColor::black);
+            ofDrawRectRounded(backgroundRect, backgroundRect.height / 10);
+
+            ofSetColor(stringColor);
+            stringFont.drawString(displayedString, padX, padY + strH);
+
+            /*
+            ofNoFill();
+            ofSetColor(ofColor::black);
+            ofDrawRectangle(padX, padY, strW, strH);
+
+            ofSetColor(ofColor::black);
+            ofDrawLine(0, rectH / 2, rectW, rectH / 2);
+            ofDrawLine(rectW / 2, 0, rectW / 2, rectH);
+            */
+
+        ofPopMatrix();
+
+        /*
         // draw line under string if hovered
         if(hovered && !editMode) {
             ofSetLineWidth(2);
@@ -102,7 +140,7 @@ string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix)
         } else {
             stringFont.drawString(displayedString, posX, posY);
         }
-
+        */
     ofPopStyle();
 
     // update states
