@@ -7,7 +7,10 @@
 [Bb]uild/
 [Oo]bj/
 [Dd]ebug*/
+*[Dd]ebug/
 [Rr]elease*/
+*[Rr]elease/
+
 
 # Compiled Object files
 *.slo
@@ -42,4 +45,3 @@
 # Qt Creator stuff
 *.qbs
 *.qbs.user
-
