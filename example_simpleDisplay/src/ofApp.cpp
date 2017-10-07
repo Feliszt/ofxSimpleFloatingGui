@@ -9,7 +9,7 @@ void ofApp::setup(){
     // setting up GUI variables
     sliderTypeA.setup(300, 800, 450, font1,ofColor::black, ofColor::blue);
     sliderTypeB.setup(0.5, 100, ofColor::gray, ofColor::black);
-    textField.setup("abcdefghijklmnopqrstuvwxyz 0123456789", font1, ofColor::black);
+    textField.setup("A", 5, font1, ofColor::black);
     toggleButton.setup(true, ofColor::darkBlue);
 }
 

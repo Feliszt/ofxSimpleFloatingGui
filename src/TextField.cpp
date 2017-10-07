@@ -5,17 +5,27 @@ TextField::TextField()
 
 }
 
-void TextField::setup(string _displayedString, ofTrueTypeFont _stringFont, ofColor _stringColor)
+void TextField::setup(string _displayedString, int _maxChar, ofTrueTypeFont _stringFont, ofColor _stringColor)
 {
     ofAddListener(ofEvents().keyPressed, this, &TextField::keyPressed);
 
     displayedString = _displayedString;
     stringFont = _stringFont;
     stringColor = _stringColor;
+    maxChar = _maxChar;
 
+    // set up background rectangle size
+    padX = 15;
+    padY = 8;
+    lineHeight = stringFont.getLineHeight();
+    float rectW = stringFont.stringWidth(_displayedString) + 2 * padX;
+    float rectH = lineHeight + 2 * padY;
+
+    // init other variables
+    maxSize = getMaxSize(_stringFont, _maxChar) + 2 * padX;
+    backgroundRect = ofRectangle(0, 0, rectW, rectH);
+    nChar = displayedString.size();
     backgroundColor.set(230);
-
-    bbPad = 3;
     blinkThresh = (int) (ofGetFrameRate() * 0.6);   // we want the blink to be 0.6 seconds long
 }
 
@@ -25,29 +35,14 @@ string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix)
     //ofFill();
     //ofDrawCircle(posX, posY, 2);
 
-    /*
-    // get bounding box of displayed string
-    ofRectangle boundingBoxString;
-    if(editMode){
-        boundingBoxString = stringFont.getStringBoundingBox(editString, posX, posY);
-    } else {
-        boundingBoxString = stringFont.getStringBoundingBox(displayedString, posX, posY);
-    }
-
-    // set hover rectangle
-    ofPoint     hoverRectPos = ofPoint(boundingBoxString.x - bbPad, boundingBoxString.y - bbPad);
-    float       hoverRectW = boundingBoxString.width + bbPad * 2;
-    float       hoverRectH = boundingBoxString.height + bbPad * 2;
-    ofRectangle hoverRect = ofRectangle(hoverRectPos, hoverRectW, hoverRectH);
-
     // get absolute position of hover rectangle
-    ofPoint     hoverRectPosAbs = hoverRectPos * transMatrix;
+    ofPoint     backgroundRectPosAbs = ofPoint(posX, posY) * transMatrix;
 
     // check if string is hovered
-    hovered = (ofGetMouseX() < hoverRectPosAbs.x + hoverRectW) &&
-              (ofGetMouseX() > hoverRectPosAbs.x)              &&
-              (ofGetMouseY() < hoverRectPosAbs.y + hoverRectH) &&
-              (ofGetMouseY() > hoverRectPosAbs.y);
+    hovered = (ofGetMouseX() < backgroundRectPosAbs.x + backgroundRect.width)  &&
+              (ofGetMouseX() > backgroundRectPosAbs.x)                         &&
+              (ofGetMouseY() < backgroundRectPosAbs.y + backgroundRect.height) &&
+              (ofGetMouseY() > backgroundRectPosAbs.y);
 
     // if we click while hovered we enter edit mode
     if(ofGetMousePressed() && !mousePressedPrev)
@@ -59,6 +54,7 @@ string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix)
     if(editMode && !editModePrev)
     {
         editString = displayedString;
+        backgroundRect.setWidth(maxSize);
         blinkTime = 0;
         blink = true;
     }
@@ -68,16 +64,22 @@ string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix)
     {
         // we save change into displayedString
         displayedString = editString;
+        backgroundRect.setWidth(stringFont.stringWidth(editString) + 2 * padX);
     }
-    */
 
-    int padX = 15;
-    int padY = 8;
-    float strW = stringFont.stringWidth(displayedString);
-    float rectW = strW + 2 * padX;
-    float strH = stringFont.stringHeight(displayedString);
-    float rectH = strH + 2 * padY;
-    backgroundRect = ofRectangle(0, 0, rectW, rectH);
+    // if we are currently in edit mode
+    if(editMode)
+    {
+        // get string rect
+        cursorX = stringFont.stringWidth(editString);
+
+        // handle blinking
+        blinkTime++;
+        if(blinkTime >= blinkThresh) {
+            blink = !blink;
+            blinkTime = 0;
+        }
+    }
 
     ofPushStyle();
     ofSetLineWidth(1);
@@ -85,19 +87,30 @@ string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix)
         ofPushMatrix();
         ofTranslate(posX, posY);
 
+            // draw background rectangle
             ofSetColor(backgroundColor);
             ofDrawRectRounded(backgroundRect, backgroundRect.height / 10);
             ofNoFill();
-            ofSetColor(ofColor::black);
+            ofSetColor((hovered && !editMode) ? ofColor::gray : ofColor::black);
             ofDrawRectRounded(backgroundRect, backgroundRect.height / 10);
 
+            // draw string
             ofSetColor(stringColor);
-            stringFont.drawString(displayedString, padX, padY + strH);
+            stringFont.drawString(editMode ? editString : displayedString, padX, padY + lineHeight);
+
+            // draw line
+            if(editMode && blink){
+                ofSetLineWidth(2);
+                ofSetColor(ofColor::black);
+                ofDrawLine(cursorX + padX + 3, padY, cursorX + padX + 3, padY + lineHeight + 3);
+            }
 
             /*
+            // debug stuff
             ofNoFill();
+            ofSetLineWidth(1);
             ofSetColor(ofColor::black);
-            ofDrawRectangle(padX, padY, strW, strH);
+            ofDrawRectangle(padX, padY, stringFont.stringWidth(editMode ? editString : displayedString), stringFont.getLineHeight());
 
             ofSetColor(ofColor::black);
             ofDrawLine(0, rectH / 2, rectW, rectH / 2);
@@ -105,42 +118,6 @@ string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix)
             */
 
         ofPopMatrix();
-
-        /*
-        // draw line under string if hovered
-        if(hovered && !editMode) {
-            ofSetLineWidth(2);
-            ofSetColor(ofColor::black);
-            ofDrawLine(hoverRect.getBottomLeft(), hoverRect.getBottomRight());
-        }
-
-        // draw blinking cursos if edit mode
-        if(editMode)
-        {
-            // handle blinking
-            blinkTime++;
-            if(blinkTime >= blinkThresh) {
-                blink = !blink;
-                blinkTime = 0;
-            }
-
-            // draw line
-            if(blink){
-                ofSetLineWidth(2);
-                ofSetColor(ofColor::black);
-                ofDrawLine(hoverRect.getTopRight(), hoverRect.getBottomRight());
-            }
-        }
-
-        // draw text inside
-        ofSetColor(stringColor);
-        if(editMode)
-        {
-            stringFont.drawString(editString, posX, posY);
-        } else {
-            stringFont.drawString(displayedString, posX, posY);
-        }
-        */
     ofPopStyle();
 
     // update states
@@ -156,6 +133,15 @@ string TextField::getValue(){
     return displayedString;
 }
 
+
+float TextField::getMaxSize(ofTrueTypeFont _font, int _sz) {
+    std::stringstream ss;
+    for(int i = 0; i < _sz; i++) {
+        ss << 'A';
+    }
+    return _font.stringWidth(ss.str());
+}
+
 void TextField::keyPressed(ofKeyEventArgs& eventArgs) {
     // debug
     //ofLog() << eventArgs.key;
@@ -166,12 +152,14 @@ void TextField::keyPressed(ofKeyEventArgs& eventArgs) {
             // remove last char
             if(editString.size() > 0) {
                 editString = editString.substr(0, editString.size()-1);
+                nChar -= 1;
             }
         }
 
         // only consider a-z or 0-9 or spacebar
-        if((eventArgs.key >= 97 && eventArgs.key <= 122) || (eventArgs.key >= 48 && eventArgs.key <= 57) || eventArgs.key == 32) {
+        if((nChar < maxChar) && ((eventArgs.key >= 97 && eventArgs.key <= 122) || (eventArgs.key >= 48 && eventArgs.key <= 57) || eventArgs.key == 32)) {
             editString += ofToString((char) eventArgs.key);
+            nChar += 1;
         }
 
         // if enter, exit edit mode
