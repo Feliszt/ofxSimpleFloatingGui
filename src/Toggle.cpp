@@ -19,10 +19,10 @@ void Toggle::setup(bool _value, ofColor _trueColor){
     trueColor   = _trueColor;
 
     falseColor = ofColor::gray;
-    rectW = 15;
+    rectW = 35;
     rectH = 18;
     circlePad = 2;
-    animTime = (int) (ofGetFrameRate() * 0.1); // it takes 0.5 seconds for the animation to play
+    animTime = (int) (ofGetFrameRate() * 0.1); // it takes 0.1 seconds for the animation to play
     deltaT  = 1 / (float) animTime;
     animCounter = value;
 }
@@ -30,8 +30,8 @@ void Toggle::setup(bool _value, ofColor _trueColor){
 /// draw
 bool Toggle::draw(float posX, float posY, ofMatrix4x4 transMatrix){
     // debug
-    //ofFill();
-    //ofDrawCircle(posX, posY, 2);
+    ofFill();
+    ofDrawCircle(posX, posY, 2);
 
     // get absolute position of button
     ofPoint posAbs = ofPoint(posX, posY) * transMatrix;
@@ -46,7 +46,7 @@ bool Toggle::draw(float posX, float posY, ofMatrix4x4 transMatrix){
               (ofGetMouseY() > boundingBox.getTop());
 
     // check if button is clicked on
-    if(hovered && ofGetMousePressed() && !mousePressedPrev)
+    if(hovered && ofGetMousePressed() && !mousePressedPrev && !animRunningUP && !animRunningDOWN)
     {
         clicked = true;
         value = !value;
@@ -74,21 +74,21 @@ bool Toggle::draw(float posX, float posY, ofMatrix4x4 transMatrix){
     }
 
     // set attributes of button
-    ofColor targetColor = falseColor;
-    ofColor buttonColor = targetColor.lerp(trueColor, animCounter);
-    float buttonPos = animCounter * rectW * sin(animCounter * PI / 2);
+    ofColor targetColor;
+    targetColor.set(falseColor);
+    targetColor.lerp(trueColor, animCounter);
+    //ofLog() << buttonColor;
+    float buttonPos = ofClamp(animCounter * rectW * sin(animCounter * PI / 2), rectH / 2, rectW - rectH / 2);
 
     // draw toggle
     ofPushMatrix();
-    ofTranslate(posX + rectH /2, posY);
+    ofTranslate(posX, posY);
 
             // draw rect
-        ofSetColor(buttonColor);
-        ofDrawCircle(0, rectH / 2, rectH / 2);
-        ofDrawRectangle(0, 0, rectW, rectH);
-        ofDrawCircle(rectW, rectH / 2, rectH / 2);
+        ofSetColor(targetColor);
+        ofDrawRectRounded(0, 0, rectW, rectH, rectH / 2);
             // draw circle
-        ofSetColor(ofColor::white);
+        ofSetColor(ofColor(230));
         ofDrawCircle(buttonPos, rectH /2, rectH / 2 - circlePad);
 
     ofPopMatrix();

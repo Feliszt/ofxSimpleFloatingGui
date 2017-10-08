@@ -6,37 +6,51 @@ SliderA::SliderA()
 }
 
 /// setup
-void SliderA::setup(float _minValue, float _maxValue, float _value, ofTrueTypeFont _font, ofColor _textColor, ofColor _dragColor)
+void SliderA::setup(float _minValue, float _maxValue, float _value, ofTrueTypeFont _font) {
+    setup(_minValue, _maxValue, _value, _font, ofColor::black, ofColor::black);
+}
+
+void SliderA::setup(float _minValue, float _maxValue, float _value, ofTrueTypeFont _font, ofColor _textColor, ofColor _triangleColor)
 {
+    // copy arguments
     minValue = _minValue;
     maxValue = _maxValue;
-    value = _value;
+    value = ofClamp(_value, _minValue, _maxValue);
     textFont = _font;
     textColor = _textColor;
-    dragColor = _dragColor;
-    dragColorBoundary = _dragColor;
-    dragColorBoundary.setBrightness(100);
+    triangleColor = _triangleColor;
 
-    posCenterString = getCenterOfString(ofToString(value));
+    // init variables
+    valueAsString = ofToString(_value, 0);
+    fontH = _font.getLineHeight();
+    stringW = _font.stringWidth(valueAsString);
+        // triangle design
+    triangleH = fontH * 0.5;
+    triangleW = triangleH * sqrt(3) / 2;
+    dragColor = _triangleColor;
+    dragColor.setBrightness(100);
+    maxColor = _triangleColor;
+    maxColor.setBrightness(50);
+    padX = _font.getSize();
 }
 
 /// draw
 float SliderA::draw(float posX, float posY, ofMatrix4x4 transMatrix){
     // debug
-    //ofFill();
-    //ofDrawCircle(posX, posY, 2);
+    ofFill();
+    ofDrawCircle(posX, posY, 2);
 
-    // get absolute position of string
-    ofPoint posStringAbs = ofPoint(posX + posCenterString.x, posY - posCenterString.y) * transMatrix;
+    // set bounding box
+    boundingBox = ofRectangle(posX, posY, stringW, fontH);
 
-    // get string from value
-    valueString = ofToString((int) value);
+    // get absolute position of bounding box
+    ofPoint bbAbs = ofPoint(boundingBox.getTopLeft()) * transMatrix;
 
     // check if hovered
-    hovered = (ofGetMouseX() < posStringAbs.x + 40) &&
-              (ofGetMouseX() > posStringAbs.x - 40) &&
-              (ofGetMouseY() < posStringAbs.y + 10) &&
-              (ofGetMouseY() > posStringAbs.y - 10);
+    hovered = (ofGetMouseX() < bbAbs.x + stringW)   &&
+              (ofGetMouseX() > bbAbs.x)             &&
+              (ofGetMouseY() < bbAbs.y + fontH)     &&
+              (ofGetMouseY() > bbAbs.y);
 
     // check if dragged
     if(hovered && ofGetMousePressed() && !mousePressedPrev)
@@ -58,58 +72,56 @@ float SliderA::draw(float posX, float posY, ofMatrix4x4 transMatrix){
         diff = ofGetMouseX() - mousePosStart.x;
         float valueUpdate = valueStart + diff / ofGetWidth() * (maxValue - minValue);
         value = ofClamp(valueUpdate, minValue, maxValue);
-    }
 
-    // get boundingbox of string
-    numDigit = valueString.length();
-    if(numDigit != numDigitPrev) posCenterString = getCenterOfString(valueString);
+        // update string state of value and updates stringW everytime the length changes
+        valueAsString = ofToString(value, 0);
+        if(valueAsString.length() != stringLengthPrev) {
+            stringW = textFont.stringWidth(valueAsString);
+        }
+        stringLengthPrev = valueAsString.length();
+    } else {
+        diff = 0;
+    }
 
     // update stuff
     draggedPrev = dragged;
     mousePressedPrev = ofGetMousePressed();
-    numDigitPrev = numDigit;
 
-    // draw value
-    ofSetColor(textColor);
-    textFont.drawString(valueString, posX, posY);
-
-    // translate
     ofPushStyle();
     ofFill();
-    ofPushMatrix();
-    ofTranslate(posX + posCenterString.x, posY - posCenterString.y, 0);
+        ofPushMatrix();
+        ofTranslate(posX, posY);
 
-        if((hovered && !dragged) || (dragged && diff == 0))
-        {
-            ofSetColor(dragColor);
-            ofDrawTriangle(20, - 5, 20, 5, 25, 0);
-            ofDrawTriangle(- 20, -5, - 20, 5, - 25, 0);
-        }
+            // draw triangles
+            if(hovered || dragged) {
+                // set color
+                ofSetColor((value == maxValue || value == minValue) ? maxColor : dragColor);
 
-        if(dragged && (diff > 0))
-        {
-            ofSetColor(dragColor);
-            if(value == maxValue)
-            {
-                ofSetColor(dragColorBoundary);
+                if(diff <= 0) {
+                    // draw 1st triangle
+                    ofPushMatrix();
+                    ofTranslate(- triangleW - padX, fontH / 2);
+                        ofDrawTriangle(0, 0, triangleW, - triangleH / 2, triangleW, triangleH / 2);
+                    ofPopMatrix();
+                }
 
+                if(diff >= 0) {
+                    // draw 2nd triangle
+                    ofPushMatrix();
+                    ofTranslate(padX + stringW, fontH / 2);
+                        ofDrawTriangle(0, - triangleH / 2, 0, triangleH / 2, triangleW, 0);
+                    ofPopMatrix();
+                }
             }
-            ofDrawTriangle(20, - 5, 20, 5, 25, 0);
-        }
 
-        if(dragged && (diff < 0))
-        {
-            ofSetColor(dragColor);
-            if(value == minValue)
-            {
-                ofSetColor(dragColorBoundary);
+            // draw text
+            ofPushMatrix();
+            ofTranslate(0, fontH);
+                ofSetColor(textColor);
+                textFont.drawString(valueAsString, 0, 0);
+            ofPopMatrix();
 
-            }
-            ofDrawTriangle(- 20, -5, - 20, 5, - 25, 0);
-        }
-
-    ofPopMatrix();
-    ofNoFill();
+        ofPopMatrix();
     ofPopStyle();
 
     // return value
@@ -129,11 +141,4 @@ float SliderA::getMaxValue(){
 /// getter for min value
 float SliderA::getMinValue(){
     return minValue;
-}
-
-
-ofVec2f SliderA::getCenterOfString(string text)
-{
-    ofRectangle stringBoundingBox = textFont.getStringBoundingBox(text, 0, 0);
-    return ofVec2f(stringBoundingBox.getWidth() / 2, stringBoundingBox.getHeight() / 2);
 }

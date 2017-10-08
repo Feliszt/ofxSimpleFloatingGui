@@ -11,8 +11,14 @@ class TextField
 {
 public:
     // methods
+        // setup methods
+    void setup(ofTrueTypeFont _stringFont);
+    void setup(int _maxChar, ofTrueTypeFont _stringFont);
+    void setup(string _displayedString, int _maxChar, ofTrueTypeFont _stringFont);
     void setup(string _displayedString, int _maxChar, ofTrueTypeFont _stringFont, ofColor _stringColor);
+        // draw
     string draw(float posX, float posY, ofMatrix4x4 transMatrix);
+        // getters
     string getValue();
 
     TextField();
@@ -30,20 +36,19 @@ private:
     int             nChar;
         // design
     ofTrueTypeFont  stringFont;
-    ofColor         stringColor;
-    ofColor         backgroundColor;
+    ofColor         stringColor, backgroundColor;
     ofRectangle     backgroundRect;
-    float           maxSize;
     int             padX, padY;
+    float           maxSize, targetWidth, deltaWidth, lineHeight;
+        // animation
+    float           animTime, animCounter, deltaT;
+    bool            animRunning;
+        // blinking
+    int             blinkTime, blinkThresh;
     float           cursorX;
-    float           lineHeight;
-    bool            hovered;
-    bool            editMode;
-    bool            editModePrev;
-    bool            mousePressedPrev;
-    int             blinkTime;
     bool            blink;
-    int             blinkThresh;
+        // states
+    bool            hovered, editMode, editModePrev, mousePressedPrev;
 };
 
 #endif // TextField_H

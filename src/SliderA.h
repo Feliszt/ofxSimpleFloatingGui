@@ -10,8 +10,13 @@
 class SliderA
 {
 public:
-    void setup(float _minValue, float _maxValue, float _value, ofTrueTypeFont _font, ofColor _textColor, ofColor _dragColor);
+    // methods
+        // setup
+    void setup(float _minValue, float _maxValue, float _value, ofTrueTypeFont _font);
+    void setup(float _minValue, float _maxValue, float _value, ofTrueTypeFont _font, ofColor _textColor, ofColor _triangleColor);
+        // draw
     float draw(float posX, float posY, ofMatrix4x4 transMatrix);
+        // getters
     float getValue();
     float getMinValue();
     float getMaxValue();
@@ -20,27 +25,21 @@ public:
 
 private:
     // variables
-    float   value;
-    float   minValue;
-    float   maxValue;
-    ofVec2f posCenterString;
-    ofVec2f mousePosStart;
-    string  valueString;
-    int     numDigit;
-    int     numDigitPrev;
-    float   valueStart;
-    float   diff;
-    bool hovered;
-    bool dragged;
-    bool draggedPrev;
-    ofTrueTypeFont textFont;
-    bool mousePressedPrev;
-    ofColor textColor;
-    ofColor hoverColor;
-    ofColor dragColor;
-    ofColor dragColorBoundary;
+        // value
+    float       value, minValue, maxValue;
+    string      valueAsString;
+        // design
+    float           triangleW, triangleH, fontH, stringW, padX;
+    ofColor         textColor, triangleColor, dragColor, maxColor;
+    ofTrueTypeFont  textFont;
+    int             stringLengthPrev;
+        // interactivity
+    ofRectangle boundingBox;
+    ofVec2f     mousePosStart;
+    float       valueStart, diff;
+        // states
+    bool        hovered, dragged, draggedPrev, mousePressedPrev;
 
-    ofVec2f getCenterOfString(string text);
 };
 
 #endif // SliderA_H

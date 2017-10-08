@@ -13,10 +13,10 @@ public:
         // setup
     void setup();
     void setup(float _value);
-    void setup(float _value, int _wSlider, int _hSlider, int _rSlider);
+    void setup(float _value, int _sliderW, int _sliderH, int _sliderR);
     void setup(float _value, ofColor _rectColor, ofColor _ellColor);
-    void setup(float _value, int _wSlider, ofColor _rectColor, ofColor _ellColor);
-    void setup(float _value, int _wSlider, int _hSlider, int _rSlider, ofColor _rectColor, ofColor _ellColor);
+    void setup(float _value, int _sliderW, ofColor _rectColor, ofColor _ellColor);
+    void setup(float _value, int _sliderW, int _sliderH, int _sliderR, ofColor _rectColor, ofColor _ellColor);
         // draw
     float draw(float posX, float poxY, ofMatrix4x4 transMatrix);
         // getter
@@ -25,21 +25,19 @@ public:
     SliderB();
 
 private:
-    float value;
-    ofColor rectColor;
-    ofColor ellColor;
-    ofColor ellColorHovered;
-    int     wSlider;
-    int     hSlider;
-    int     rSlider;
-    bool    rectHovered;
-    bool    ellHovered;
-    bool    dragged;
-    bool    draggedPrev;
-    float   valueStart;
-    ofVec2f mousePosStart;
-    float   diff;
-    bool    mousePressedPrev;
+    // variables
+        // value
+    float       value, valueStart;
+        // design
+    int         sliderW, sliderH, sliderR;
+    float       posSlider;
+    ofColor     rectColor, ellColor, ellColorHovered;
+        // states
+    bool        rectHovered, ellHovered, dragged, draggedPrev, mousePressedPrev;
+        // interactivity
+    ofRectangle boundingBoxRect, boundingBoxEll;
+    float       diff;
+    ofVec2f     mousePosStart;
 };
 
 #endif // SliderB_H

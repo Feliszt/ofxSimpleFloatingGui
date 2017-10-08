@@ -16,9 +16,9 @@ void SliderB::setup(float _value)
     setup(_value, 100, 5, 7);
 }
 
-void SliderB::setup(float _value, int _wSlider, int _hSlider, int _rSlider)
+void SliderB::setup(float _value, int _sliderW, int _sliderH, int _sliderR)
 {
-    setup(_value, _wSlider, _hSlider, _rSlider, ofColor::gray, ofColor::black);
+    setup(_value, _sliderW, _sliderH, _sliderR, ofColor::gray, ofColor::black);
 }
 
 void SliderB::setup(float _value, ofColor _rectColor, ofColor _ellColor)
@@ -26,43 +26,46 @@ void SliderB::setup(float _value, ofColor _rectColor, ofColor _ellColor)
     setup(_value, 100, 5, 7, _rectColor, _ellColor);
 }
 
-void SliderB::setup(float _value, int _wSlider, ofColor _rectColor, ofColor _ellColor)
+void SliderB::setup(float _value, int _sliderW, ofColor _rectColor, ofColor _ellColor)
 {
-    setup(_value, _wSlider, 5, 7, _rectColor, _ellColor);
+    setup(_value, _sliderW, 5, 7, _rectColor, _ellColor);
 }
 
-void SliderB::setup(float _value, int _wSlider, int _hSlider, int _rSlider, ofColor _rectColor, ofColor _ellColor)
+void SliderB::setup(float _value, int _sliderW, int _sliderH, int _sliderR, ofColor _rectColor, ofColor _ellColor)
 {
-    value = _value;
+    // copy values
+    value = ofClamp(_value, 0, 1);
     rectColor = _rectColor;
     ellColor = _ellColor;
+    sliderW = _sliderW;
+    sliderH = _sliderH;
+    sliderR = _sliderR;
 
-    wSlider = _wSlider;
-    hSlider = _hSlider;
-    rSlider = _rSlider;
+    // init variables
+    posSlider = _value * sliderW;
 }
 
 /// draw method
 float SliderB::draw(float posX, float posY, ofMatrix4x4 transMatrix){
     // debug
-    //ofFill();
-    //ofDrawCircle(posX, posY, 2);
+    ofFill();
+    ofDrawCircle(posX, posY, 2);
 
     // compute position of slider
     ofPoint posRectAbs = ofPoint(posX, posY) * transMatrix;
-    ofPoint posSlider = ofPoint(posX + value * wSlider, posY + hSlider / 2);
+    ofPoint posSlider = ofPoint(posX + value * sliderW, posY + sliderH / 2);
     ofPoint posSliderAbs = posSlider * transMatrix;
 
     // check if hovered
-    ellHovered = (ofGetMouseX() < posSliderAbs.x + rSlider) &&
-              (ofGetMouseX() > posSliderAbs.x - rSlider) &&
-              (ofGetMouseY() < posSliderAbs.y + rSlider) &&
-              (ofGetMouseY() > posSliderAbs.y - rSlider);
+    ellHovered = (ofGetMouseX() < posSliderAbs.x + sliderR) &&
+                 (ofGetMouseX() > posSliderAbs.x - sliderR) &&
+                 (ofGetMouseY() < posSliderAbs.y + sliderR) &&
+                 (ofGetMouseY() > posSliderAbs.y - sliderR);
 
-    rectHovered = (ofGetMouseX() < posRectAbs.x + wSlider)     &&
-              (ofGetMouseX() > posRectAbs.x)                &&
-              (ofGetMouseY() < posRectAbs.y + hSlider + 5)     &&
-              (ofGetMouseY() > posRectAbs.y - 5);
+    rectHovered = (ofGetMouseX() < posRectAbs.x + sliderW)     &&
+                  (ofGetMouseX() > posRectAbs.x)                &&
+                  (ofGetMouseY() < posRectAbs.y + sliderH + 5)     &&
+                  (ofGetMouseY() > posRectAbs.y - 5);
 
     // check if ellipse is clicked on
     if(ellHovered && ofGetMousePressed() && !mousePressedPrev)
@@ -78,7 +81,7 @@ float SliderB::draw(float posX, float posY, ofMatrix4x4 transMatrix){
         diff = ofGetMouseX() - posSliderAbs.x;
 
         // update value
-        float valueUpdate = value + diff / wSlider;
+        float valueUpdate = value + diff / sliderW;
         value = ofClamp(valueUpdate, 0, 1);
         dragged = true;
     }
@@ -97,7 +100,7 @@ float SliderB::draw(float posX, float posY, ofMatrix4x4 transMatrix){
     if(dragged)
     {
         diff = ofGetMouseX() - mousePosStart.x;
-        float valueUpdate = valueStart + diff / wSlider;
+        float valueUpdate = valueStart + diff / sliderW;
         value = ofClamp(valueUpdate, 0, 1);
     }
 
@@ -108,13 +111,13 @@ float SliderB::draw(float posX, float posY, ofMatrix4x4 transMatrix){
 
         // draw slider
         ofSetColor(ellColor);
-        ofDrawRectRounded(posX, posY, posSlider.x - posX, hSlider, 10);
+        ofDrawRectRounded(posX, posY, posSlider.x - posX, sliderH, 10);
         ofSetColor(rectColor);
-        ofDrawRectRounded(posSlider.x, posY, wSlider - (posSlider.x - posX), hSlider, 10);
+        ofDrawRectRounded(posSlider.x, posY, sliderW - (posSlider.x - posX), sliderH, 10);
 
         // draw ellipse
         ofSetColor(ellColor);
-        ofDrawCircle(posSlider, rSlider);
+        ofDrawCircle(posSlider, sliderR);
 
     // reset style
     ofPopStyle();

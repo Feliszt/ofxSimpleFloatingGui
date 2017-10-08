@@ -7,10 +7,10 @@ void ofApp::setup(){
     font2.load("overpass-mono/overpass-mono-regular", 11);
 
     // setting up GUI variables
-    sliderTypeA.setup(300, 800, 450, font1,ofColor::black, ofColor::blue);
-    sliderTypeB.setup(0.5, 100, ofColor::gray, ofColor::black);
-    textField.setup("A", 5, font1, ofColor::black);
-    toggleButton.setup(true, ofColor::darkBlue);
+    sliderTypeA.setup(300, 1200, 450, font2);
+    sliderTypeB.setup();
+    textField.setup(font1);
+    toggleButton.setup();
 }
 
 //--------------------------------------------------------------
@@ -34,17 +34,17 @@ void ofApp::draw(){
         // draw UI elements
             // slider A
         ofSetColor(ofColor::black);
-        font2.drawString("Slider showing value", 0, 0);
-        sliderTypeA.draw(10, 20, transformMatrix);
+        font2.drawString("SliderA", 0, 0);
+        sliderTypeA.draw(0, 20, transformMatrix);
             // slider B
-        font2.drawString("Minimal slider with [0 - 1] range", 0, 70);
-        sliderTypeB.draw(10, 90, transformMatrix);
+        font2.drawString("SliderB", 150, 0);
+        sliderTypeB.draw(150, 20, transformMatrix);
             // text field
-        font2.drawString("Text input box", 0, 140);
-        textField.draw(10, 160, transformMatrix);
+        font2.drawString("TextField", 300, 0);
+        textField.draw(300, 20, transformMatrix);
             // toggle button
-        font2.drawString("Toggle button", 0, 210);
-        toggleButton.draw(10, 230, transformMatrix);
+        font2.drawString("Toggle", 450, 0);
+        toggleButton.draw(450, 20, transformMatrix);
 
     ofPopMatrix();
 }

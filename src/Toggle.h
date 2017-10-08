@@ -22,23 +22,17 @@ public:
     Toggle();
 private:
     // variables
-    bool    value;
+        // value
+    bool        value;
         // design
-    ofColor trueColor;
-    ofColor falseColor;
-    int     circlePad;
-    int     rectW;
-    int     rectH;
+    ofColor     trueColor, falseColor;
+    int         circlePad, rectW, rectH;
         // states
-    bool    hovered;
-    bool    clicked;
-    bool    mousePressedPrev;
+    bool        hovered, clicked, mousePressedPrev;
         // toggle animation
-    float     animCounter;
-    int     animTime;
-    float   deltaT;
-    bool    animRunningUP;
-    bool    animRunningDOWN;
+    int         animTime;
+    float       animCounter, deltaT;
+    bool        animRunningUP ,animRunningDOWN;
 };
 
 #endif // TOGGLE_H
