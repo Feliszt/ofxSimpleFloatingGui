@@ -36,9 +36,11 @@ void SliderA::setup(float _minValue, float _maxValue, float _value, ofTrueTypeFo
 
 /// draw
 float SliderA::draw(float posX, float posY, ofMatrix4x4 transMatrix){
+    /*
     // debug
     ofFill();
     ofDrawCircle(posX, posY, 2);
+    */
 
     // set bounding box
     boundingBox = ofRectangle(posX, posY, stringW, fontH);

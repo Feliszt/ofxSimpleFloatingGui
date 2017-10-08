@@ -29,9 +29,11 @@ void Toggle::setup(bool _value, ofColor _trueColor){
 
 /// draw
 bool Toggle::draw(float posX, float posY, ofMatrix4x4 transMatrix){
+    /*
     // debug
     ofFill();
     ofDrawCircle(posX, posY, 2);
+    */
 
     // get absolute position of button
     ofPoint posAbs = ofPoint(posX, posY) * transMatrix;
@@ -81,17 +83,20 @@ bool Toggle::draw(float posX, float posY, ofMatrix4x4 transMatrix){
     float buttonPos = ofClamp(animCounter * rectW * sin(animCounter * PI / 2), rectH / 2, rectW - rectH / 2);
 
     // draw toggle
-    ofPushMatrix();
-    ofTranslate(posX, posY);
+    ofPushStyle();
+        ofPushMatrix();
+        ofTranslate(posX, posY);
 
-            // draw rect
-        ofSetColor(targetColor);
-        ofDrawRectRounded(0, 0, rectW, rectH, rectH / 2);
-            // draw circle
-        ofSetColor(ofColor(230));
-        ofDrawCircle(buttonPos, rectH /2, rectH / 2 - circlePad);
+                // draw rect
+            ofSetColor(targetColor);
+            ofDrawRectRounded(0, 0, rectW, rectH, rectH / 2);
+                // draw circle
+            ofSetColor(ofColor(230));
+            ofDrawCircle(buttonPos, rectH /2, rectH / 2 - circlePad);
 
-    ofPopMatrix();
+        ofPopMatrix();
+
+    ofPopStyle();
 
     // update state
     mousePressedPrev = ofGetMousePressed();

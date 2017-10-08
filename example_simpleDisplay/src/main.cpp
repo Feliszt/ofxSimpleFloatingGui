@@ -5,7 +5,7 @@ int main(){
 	// can be OF_WINDOW or OF_FULLSCREEN
 	// pass in width and height too:
 
-    ofSetupOpenGL(1000, 300, OF_WINDOW);
+    ofSetupOpenGL(750, 125, OF_WINDOW);
     ofSetWindowTitle("ofxSimpleFloatingGui - simple display");
 
 	ofRunApp(new ofApp());

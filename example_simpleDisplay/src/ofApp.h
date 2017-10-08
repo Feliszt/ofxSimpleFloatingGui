@@ -14,6 +14,7 @@ class ofApp: public ofBaseApp{
         SliderB     sliderTypeB;
         TextField   textField;
         Toggle      toggleButton;
+        Button      button;
 
         // font variables
         ofTrueTypeFont font1, font2;

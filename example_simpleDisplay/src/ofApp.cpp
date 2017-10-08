@@ -9,8 +9,9 @@ void ofApp::setup(){
     // setting up GUI variables
     sliderTypeA.setup(300, 1200, 450, font2);
     sliderTypeB.setup();
-    textField.setup(font1);
+    textField.setup("Text field", 10, font1);
     toggleButton.setup();
+    button.setup();
 }
 
 //--------------------------------------------------------------
@@ -44,7 +45,10 @@ void ofApp::draw(){
         textField.draw(300, 20, transformMatrix);
             // toggle button
         font2.drawString("Toggle", 450, 0);
-        toggleButton.draw(450, 20, transformMatrix);
+        toggleButton.draw(450, 20, transformMatrix);        
+            // button
+        font2.drawString("Button", 600, 0);
+        button.draw(600, 20, transformMatrix);
 
     ofPopMatrix();
 }

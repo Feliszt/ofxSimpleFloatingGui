@@ -45,11 +45,12 @@ void TextField::setup(string _displayedString, int _maxChar, ofTrueTypeFont _str
     blinkThresh = (int) (ofGetFrameRate() * 0.6);   // we want the blink to be 0.6 seconds long
 }
 
-string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix)
-{
+string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix){
+    /*
     // debug
     ofFill();
     ofDrawCircle(posX, posY, 2);
+    */
 
     // get absolute position of hover rectangle
     ofPoint     backgroundRectPosAbs = ofPoint(posX, posY) * transMatrix;

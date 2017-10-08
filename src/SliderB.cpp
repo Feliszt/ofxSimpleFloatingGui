@@ -47,9 +47,11 @@ void SliderB::setup(float _value, int _sliderW, int _sliderH, int _sliderR, ofCo
 
 /// draw method
 float SliderB::draw(float posX, float posY, ofMatrix4x4 transMatrix){
+    /*
     // debug
     ofFill();
     ofDrawCircle(posX, posY, 2);
+    */
 
     // compute position of slider
     ofPoint posRectAbs = ofPoint(posX, posY) * transMatrix;
