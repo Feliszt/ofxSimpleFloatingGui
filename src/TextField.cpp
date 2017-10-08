@@ -30,10 +30,10 @@ void TextField::setup(string _displayedString, int _maxChar, ofTrueTypeFont _str
 
     // set up background rectangle size
     padX = ofMap(_stringFont.getSize(), 5, 11, 5, 15);
-    padY = 8;
-    lineHeight = stringFont.getLineHeight();
+    padY = 6;
+    lineHeight = stringFont.stringHeight(displayedString);
     float rectW = stringFont.stringWidth(displayedString) + 2 * padX;
-    float rectH = lineHeight + 2 * padY + ofMap(_stringFont.getSize(), 5, 11, 1, 5) ;
+    float rectH = lineHeight + 2 * padY;
 
     // init other variables
     maxSize = getMaxSize(_stringFont, _maxChar) + 2 * padX;
@@ -46,11 +46,6 @@ void TextField::setup(string _displayedString, int _maxChar, ofTrueTypeFont _str
 }
 
 string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix){
-    /*
-    // debug
-    ofFill();
-    ofDrawCircle(posX, posY, 2);
-    */
 
     // get absolute position of hover rectangle
     ofPoint     backgroundRectPosAbs = ofPoint(posX, posY) * transMatrix;
@@ -124,7 +119,11 @@ string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix){
         ofPushMatrix();
         ofTranslate(posX, posY);
 
+            // debug
+            //ofDrawCircle(0, 0, 2);
+
             // draw background rectangle
+            ofFill();
             ofSetColor(backgroundColor);
             ofDrawRectRounded(backgroundRect, backgroundRect.height / 2);
 
@@ -143,7 +142,7 @@ string TextField::draw(float posX, float posY, ofMatrix4x4 transMatrix){
             if(editMode && blink){
                 ofSetLineWidth(2);
                 ofSetColor(ofColor::black);
-                ofDrawLine(cursorX + padX + 3, padY, cursorX + padX + 3, padY + lineHeight + 3);
+                ofDrawLine(cursorX + padX + 3, 0, cursorX + padX + 3, backgroundRect.height);
             }
 
             /*

@@ -3,11 +3,11 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     // load fonts
-    font1.load("overpass-mono/overpass-mono-regular", 11);
-    font2.load("overpass-mono/overpass-mono-regular", 11);
+    font1.load("overpass-mono/overpass-mono-regular.otf", 10);
+    font2.load("overpass-mono/overpass-mono-regular.otf", 12);
 
     // setting up GUI variables
-    sliderTypeA.setup(300, 1200, 450, font2);
+    sliderTypeA.setup(300, 1200, 450, font1);
     sliderTypeB.setup();
     textField.setup("Text field", 10, font1);
     toggleButton.setup();

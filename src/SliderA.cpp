@@ -22,10 +22,10 @@ void SliderA::setup(float _minValue, float _maxValue, float _value, ofTrueTypeFo
 
     // init variables
     valueAsString = ofToString(_value, 0);
-    fontH = _font.getLineHeight();
+    fontH = _font.stringHeight(valueAsString);
     stringW = _font.stringWidth(valueAsString);
         // triangle design
-    triangleH = fontH * 0.5;
+    triangleH = fontH * 0.8;
     triangleW = triangleH * sqrt(3) / 2;
     dragColor = _triangleColor;
     dragColor.setBrightness(100);
@@ -122,6 +122,13 @@ float SliderA::draw(float posX, float posY, ofMatrix4x4 transMatrix){
                 ofSetColor(textColor);
                 textFont.drawString(valueAsString, 0, 0);
             ofPopMatrix();
+
+            /*
+            // debug stuff
+            ofNoFill();
+            ofSetColor(ofColor::black);
+            ofDrawRectangle(0, 0, stringW, fontH);
+            */
 
         ofPopMatrix();
     ofPopStyle();
