@@ -41,6 +41,7 @@ void Button::setup(string _textString, ofTrueTypeFont _textFont, ofColor _textCo
     animTime = (int) (ofGetFrameRate() * 0.3);
     deltaT = 1 / (float) animTime;
 
+    ofLog() << "noFont = " << noFont << " Button size = " << buttonW << " x " << buttonH;
 }
 
 /// draw
@@ -101,6 +102,11 @@ bool Button::draw(float posX, float posY, ofMatrix4x4 transMatrix){
         ofPopMatrix();
     ofPopStyle();
 
+    return clicked;
+}
+
+/// getter for value
+bool Button::getValue(){
     return clicked;
 }
 

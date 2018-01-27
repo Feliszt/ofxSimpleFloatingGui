@@ -11,7 +11,8 @@ void ofApp::setup(){
     sliderTypeB.setup();
     textField.setup("Text field", 10, font1);
     toggleButton.setup();
-    button.setup();
+    button.setup("Button1", font1, ofColor::black, ofColor::gray);
+    button2.setup("Button2", font1, ofColor::black, ofColor::gray);
 }
 
 //--------------------------------------------------------------
@@ -49,6 +50,7 @@ void ofApp::draw(){
             // button
         font2.drawString("Button", 600, 0);
         button.draw(600, 20, transformMatrix);
+        ofLog() << button2.draw(650, 20, transformMatrix);
 
     ofPopMatrix();
 }

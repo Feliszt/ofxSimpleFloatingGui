@@ -15,6 +15,7 @@ class ofApp: public ofBaseApp{
         TextField   textField;
         Toggle      toggleButton;
         Button      button;
+        Button      button2;
 
         // font variables
         ofTrueTypeFont font1, font2;

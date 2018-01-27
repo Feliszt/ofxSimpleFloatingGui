@@ -76,7 +76,7 @@ float SliderA::draw(float posX, float posY, ofMatrix4x4 transMatrix){
         value = ofClamp(valueUpdate, minValue, maxValue);
 
         // update string state of value and updates stringW everytime the length changes
-        valueAsString = ofToString(value, 0);
+        valueAsString = ofToString(value - 0.5f, 0);
         if(valueAsString.length() != stringLengthPrev) {
             stringW = textFont.stringWidth(valueAsString);
         }
