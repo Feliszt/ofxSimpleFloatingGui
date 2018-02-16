@@ -19,6 +19,8 @@ public:
     bool draw(float posX, float posY, ofMatrix4x4 transMatrix);
         // getter
     bool getValue();
+        // setter
+    void setTextColor(ofColor col);
 
     Button();
 
@@ -34,7 +36,8 @@ private:
     ofColor         textColor, backgroundColor, hoveredColor;
     ofTrueTypeFont  textFont;
         // states
-    bool            hovered, clicked, mousePressedPrev;
+    bool            clicked = false;
+    bool            hovered, mousePressedPrev;
         // interaction
     ofPoint         circlePos;
     float           animTime, animCounter, deltaT;
