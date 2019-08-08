@@ -100,6 +100,8 @@ bool Toggle::draw(float posX, float posY, ofMatrix4x4 transMatrix){
 
     // update state
     mousePressedPrev = ofGetMousePressed();
+
+	return value;
 }
 
 /// getter

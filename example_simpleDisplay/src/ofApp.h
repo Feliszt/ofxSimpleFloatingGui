@@ -16,6 +16,9 @@ class ofApp: public ofBaseApp{
         Toggle      toggleButton;
         Button      button;
         Button      button2;
+		DropDown	dropdown;
+		vector<string> dropDownList;
+		int			currIndInDropDown;
 
         // font variables
         ofTrueTypeFont font1, font2;

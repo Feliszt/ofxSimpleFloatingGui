@@ -108,6 +108,11 @@ bool Button::getValue(){
     return clicked;
 }
 
+/// getter for height
+float Button::getHeight() {
+	return buttonH;
+}
+
 /// setter for color
 void Button::setTextColor(ofColor col){
     textColor = col;

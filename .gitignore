@@ -11,12 +11,20 @@
 [Rr]elease*/
 *[Rr]elease/
 
-
 # Compiled Object files
 *.slo
 *.lo
 *.o
 *.obj
+*.exp
+*.ilk
+*.pdb
+*.sln
+*.vcxproj
+*.filters
+*.user
+*.rc
+*.make
 
 # Precompiled Headers
 *.gch

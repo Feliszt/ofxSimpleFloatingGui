@@ -13,11 +13,24 @@ void ofApp::setup(){
     toggleButton.setup();
     button.setup("Button1", font1, ofColor::black, ofColor::gray);
     button2.setup("Button2", font1, ofColor::black, ofColor::gray);
+		// dropdown
+	dropDownList.push_back("Item1");
+	dropDownList.push_back("Item2");
+	dropDownList.push_back("Item3");
+	dropDownList.push_back("Item4");
+	dropDownList.push_back("Item5");
+	currIndInDropDown = 0;
+	dropdown.setup(dropDownList, currIndInDropDown, font1, ofColor::black, ofColor::whiteSmoke);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 
+	// update drop down and create event listener
+	if (dropdown.getValueInt() != currIndInDropDown) {
+		ofLog() << "Value of drop down menu changed to :\t" << dropDownList[dropdown.getValueInt()];
+	}
+	currIndInDropDown = dropdown.getValueInt();
 }
 
 //--------------------------------------------------------------
@@ -50,7 +63,9 @@ void ofApp::draw(){
             // button
         font2.drawString("Button", 600, 0);
         button.draw(600, 20, transformMatrix);
-        ofLog() << button2.draw(650, 20, transformMatrix);
+			// dropdown
+		font2.drawString("DropDown", 750, 0);
+		dropdown.draw(750, 20, transformMatrix);
 
     ofPopMatrix();
 }

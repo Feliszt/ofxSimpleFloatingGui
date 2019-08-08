@@ -19,6 +19,7 @@ public:
     bool draw(float posX, float posY, ofMatrix4x4 transMatrix);
         // getter
     bool getValue();
+	float getHeight();
         // setter
     void setTextColor(ofColor col);
 

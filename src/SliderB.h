@@ -21,6 +21,7 @@ public:
     float draw(float posX, float poxY, ofMatrix4x4 transMatrix);
         // getter
     float getValue();
+	float getHeight();
 
     SliderB();
 
