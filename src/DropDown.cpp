@@ -49,6 +49,7 @@ void DropDown::setup(vector<string> _stringList, int _currInd, ofTrueTypeFont _t
 	hoveredColor.setBrightness(hoveredColor.getBrightness() + 30);
 	// animation
 	motionRatio = 0.8;
+	motionRatioGizmo = 0.3;
 	animTime = (int)(ofGetFrameRate() * 0.3);
 	deltaT = 1 / (float)animTime;
 }
@@ -93,6 +94,16 @@ void DropDown::draw(float posX, float posY, ofMatrix4x4 transMatrix) {
 	ofTranslate(posX, posY);
 
 	// draw background rectangle
+	int numIter = 5;
+	for (int i = 0; i < numIter; i++) {
+		float alpha = ofMap(i, 0, numIter - 1, 20, 0);
+		float w = ofMap(i, 0, numIter - 1, buttonW*1.0, buttonW*0.9);
+		float hOffset = ofMap(i, 0, numIter - 1, 0, 10);
+		float c = ofMap(i, 0, numIter - 1, 0, 200);
+		float xOffset = (buttonW - w) * 0.5;
+		ofSetColor(c, alpha);
+		ofDrawRectRounded(xOffset, 0, w, buttonH + hOffset, buttonHSmall * 0.1);
+	}
 	ofSetColor(backgroundColor);
 	ofDrawRectRounded(0, 0, buttonW, buttonH, buttonHSmall * 0.1);
 
@@ -149,8 +160,12 @@ void DropDown::draw(float posX, float posY, ofMatrix4x4 transMatrix) {
 		float strH = textFont.stringHeight(stringList[i]);
 		float ptX = 2 * padX + strW;
 		float ptY = (2 * offsetY - lineHeight - 2 * padY)*0.5 + strH * 0.5;
+		gizmoX *= motionRatioGizmo;
+		gizmoX += (1 - motionRatioGizmo)*ptX;
+		gizmoY *= motionRatioGizmo;
+		gizmoY += (1 - motionRatioGizmo)*ptY;
 		ofSetColor(textColor);
-		ofDrawTriangle(ptX, ptY, ptX + 0.8 * padX, ptY + padX * 0.5, ptX + 0.8 * padX, ptY - padX * 0.5);
+		ofDrawTriangle(gizmoX, gizmoY, gizmoX + 0.8 * padX, gizmoY + padX * 0.5, gizmoX + 0.8 * padX, gizmoY - padX * 0.5);
 
 		// if clicked, change current index
 		if (clicked) {

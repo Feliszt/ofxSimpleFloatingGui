@@ -15,7 +15,7 @@ public:
     void setup(ofTrueTypeFont _stringFont);
     void setup(int _maxChar, ofTrueTypeFont _stringFont);
     void setup(string _displayedString, int _maxChar, ofTrueTypeFont _stringFont);
-    void setup(string _displayedString, int _maxChar, ofTrueTypeFont _stringFont, ofColor _stringColor);
+    void setup(string _displayedString, int _maxChar, ofTrueTypeFont _stringFont, ofColor _stringColor, ofColor _backgroundColor);
         // draw
     string draw(float posX, float posY, ofMatrix4x4 transMatrix);
         // getters

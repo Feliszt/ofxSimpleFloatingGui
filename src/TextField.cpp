@@ -16,21 +16,22 @@ void TextField::setup(int _maxChar, ofTrueTypeFont _stringFont){
 
 void TextField::setup(string _displayedString, int _maxChar, ofTrueTypeFont _stringFont)
 {
-    setup(_displayedString, _maxChar, _stringFont, ofColor::black);
+    setup(_displayedString, _maxChar, _stringFont, ofColor::black, ofColor(230));
 }
 
-void TextField::setup(string _displayedString, int _maxChar, ofTrueTypeFont _stringFont, ofColor _stringColor)
+void TextField::setup(string _displayedString, int _maxChar, ofTrueTypeFont _stringFont, ofColor _stringColor, ofColor _backgroundColor)
 {
     ofAddListener(ofEvents().keyPressed, this, &TextField::keyPressed);
 
     displayedString = _displayedString.substr(0, _maxChar);
     stringFont = _stringFont;
     stringColor = _stringColor;
+	backgroundColor = _backgroundColor;
     maxChar = _maxChar;
 
     // set up background rectangle size
     padX = ofMap(_stringFont.getSize(), 5, 11, 5, 15);
-    padY = 6;
+    padY = 15;
     lineHeight = stringFont.stringHeight(displayedString);
     float rectW = stringFont.stringWidth(displayedString) + 2 * padX;
     float rectH = lineHeight + 2 * padY;
@@ -41,7 +42,6 @@ void TextField::setup(string _displayedString, int _maxChar, ofTrueTypeFont _str
     animTime = (int) (ofGetFrameRate() * 0.2);
     deltaT = 1 / (float) animTime;
     nChar = displayedString.size();
-    backgroundColor.set(230);
     blinkThresh = (int) (ofGetFrameRate() * 0.6);   // we want the blink to be 0.6 seconds long
 }
 

@@ -16,7 +16,7 @@ void ofApp::setup(){
 		// dropdown
 	dropDownList.push_back("Item1");
 	dropDownList.push_back("Item2");
-	dropDownList.push_back("Item3");
+	dropDownList.push_back("Item3_LOOOOOOOOOOONG");
 	dropDownList.push_back("Item4");
 	dropDownList.push_back("Item5");
 	currIndInDropDown = 0;
@@ -35,6 +35,8 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	ofBackgroundHex(0xffffff);
+
     // create ofMatrix4x4 variable in which we will store future deformations
     ofMatrix4x4 transformMatrix;
 

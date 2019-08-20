@@ -46,6 +46,7 @@ private:
 	float			motionRatio;
 	float           animTime, animCounter, deltaT;
 	bool            animRunning;
+	float			gizmoX, gizmoY, motionRatioGizmo;
 
 };
 
